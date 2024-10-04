@@ -1,3 +1,5 @@
+const url = 'http://localhost:3000/pensamentos'
+
 const api = {
     async getThoughts() {
       try {
@@ -55,9 +57,18 @@ const api = {
       }
     },
 
+    async deleteThought(id) {
+      try {
+        const response = await fetch(`http://localhost:3000/pensamentos/${id}`, {
+          method: 'DELETE',
+        })
+      }
+      catch {
+        alert('Erro ao excluir pensamento')
+        throw error
+      }
+    }
 
-
-    
   }
   
   export default api

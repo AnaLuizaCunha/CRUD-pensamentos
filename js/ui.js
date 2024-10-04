@@ -50,12 +50,28 @@ const ui = {
         const iconEdit = document.createElement('img');
         iconEdit.src = 'assets/imagens/icone-editar.png';
         iconEdit.alt = 'Editar pensamento';
-
         btnEdit.appendChild(iconEdit);
+
+        const btnDelete = document.createElement('button');
+        btnDelete.classList.add('botao-excluir');
+        btnDelete.onclick = async () => {
+            try {
+                await api.deleteThought(thought.id);
+                ui.renderThoughts();
+            } catch (error) {
+                alert('Erro ao excluir pensamento');   
+            }
+        }
+
+        const iconDelete = document.createElement('img');
+        iconDelete.src = 'assets/imagens/icone-excluir.png';
+        iconDelete.alt = 'Excluir pensamento';
+        btnDelete.appendChild(iconDelete);
 
         const icons = document.createElement('div');
         icons.classList.add('icones');
         icons.appendChild(btnEdit);
+        icons.appendChild(btnDelete);
 
         li.appendChild(iconQuotationMarks);
         li.appendChild(thoughtContent);
