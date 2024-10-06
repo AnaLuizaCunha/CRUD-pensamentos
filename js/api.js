@@ -3,8 +3,8 @@ const URL_BASE = 'http://localhost:3000'
 const api = {
     async getThoughts() {
       try {
-        const response = await fetch(`${URL_BASE}/pensamentos`);
-        return await response.json()
+        const response = await axios.get(`${URL_BASE}/pensamentos`);
+        return await response.data
       }
       catch {
         alert('Erro ao buscar pensamentos')
@@ -14,14 +14,8 @@ const api = {
 
     async saveThoughts(thought) {
       try {
-        const response = await fetch(`${URL_BASE}/pensamentos`, {
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(thought) // objeto js que será convertido para JSON
-        })
-        return await response.json()
+        const response = await axios.post(`${URL_BASE}/pensamentos`, thought);
+        return await response.data
       }
       catch {
         alert('Erro ao salvar pensamentos')
@@ -31,10 +25,11 @@ const api = {
 
     async getThoughtById(id) {
       try {
-        const response = await fetch(`${URL_BASE}/pensamentos${id}`);
-        return await response.json()
+        const response = await axios.get(`${URL_BASE}/pensamentos/${id}`);
+        return await response.data
       }
       catch {
+        console.log(error)
         alert('Erro ao buscar pensamento')
         throw error
       }
@@ -42,14 +37,8 @@ const api = {
 
     async editThought(thought) {
       try {
-        const response = await fetch(`${URL_BASE}/pensamentos${thought.id}`, {
-          method: 'PUT',
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(thought) // objeto js que será convertido para JSON
-        })
-        return await response.json()
+        const response = await axios.put(`${URL_BASE}/pensamentos/${thought.id}`, thought);
+        return await response.data
       }
       catch {
         alert('Erro ao editar pensamento')
@@ -59,9 +48,7 @@ const api = {
 
     async deleteThought(id) {
       try {
-        const response = await fetch(`${URL_BASE}/pensamentos${id}`, {
-          method: 'DELETE',
-        })
+        const response = await axios.delete(`${URL_BASE}/pensamentos/${id}`, )
       }
       catch {
         alert('Erro ao excluir pensamento')
