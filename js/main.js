@@ -7,8 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const formThought = document.getElementById('pensamento-form');
     const btnCancel = document.getElementById("botao-cancelar");
 
+    const inputSearch = document.getElementById('campo-busca');
+
     formThought.addEventListener('submit', handleFormSubmission);
     btnCancel.addEventListener('click', handleCancel);
+    inputSearch.addEventListener('input', handleSearch);
 
 
 })
@@ -35,4 +38,14 @@ async function handleFormSubmission(event) {
 
 function handleCancel() {
     ui.cleanForm();
+}
+
+async function handleSearch() {
+    const wordSearch = document.getElementById('campo-busca').value;
+    try {
+        const filteredThoughts = await api.getThoughtByWord(wordSearch);
+        ui.renderThoughts(filteredThoughts);
+    } catch (error) {
+        alert('Erro ao buscar pensamento');
+    }
 }

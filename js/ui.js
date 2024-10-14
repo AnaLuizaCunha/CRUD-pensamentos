@@ -13,18 +13,25 @@ const ui = {
         document.getElementById('pensamento-form').reset();
     },
 
-    async renderThoughts() {
+    async renderThoughts(filteredThoughts = null) {
         const thoughtsList = document.getElementById('lista-pensamentos');
         const emptyMessage = document.getElementById('mensagem-vazia');
         thoughtsList.innerHTML = '';
 
         try {
-            const thoughts = await api.getThoughts();
-            if(thoughts.length === 0) {
+            let thoughtsToRender;
+
+            if(filteredThoughts) {
+                thoughtsToRender = filteredThoughts;
+            } else {
+                thoughtsToRender = await api.getThoughts();
+            }
+
+            if(thoughtsToRender.length === 0) {
                 emptyMessage.style.display = 'block';
             } else {
                 emptyMessage.style.display = 'none';
-                thoughts.forEach(ui.addThoughtToList);
+                thoughtsToRender.forEach(ui.addThoughtToList);
             }  
         } catch (error) {
             console.log('Erro ao tentar acessar a API: ', error);

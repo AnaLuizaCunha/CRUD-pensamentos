@@ -54,8 +54,22 @@ const api = {
         alert('Erro ao excluir pensamento')
         throw error
       }
-    }
+    },
 
+    async getThoughtByWord(word) {
+      try {
+        const thoughts = await this.getThoughts();
+        const wordLowerCase = word.toLowerCase();
+
+        const filteredThoughts = thoughts.filter(thought => {
+          return (thought.conteudo.toLowerCase().includes(wordLowerCase) || thought.autoria.toLowerCase().includes(wordLowerCase)); // Verifica se a palavra está no conteúdo ou no autor do pensamento
+        });
+      return filteredThoughts;
+      } catch (error) {
+        alert('Erro ao buscar pensamentos')
+        throw error
+      }
   }
-  
-  export default api
+}
+
+export default api
