@@ -83,8 +83,25 @@ const ui = {
         iconDelete.alt = 'Excluir pensamento';
         btnDelete.appendChild(iconDelete);
 
+        const favoriteBtn = document.createElement('button');
+        favoriteBtn.classList.add('botao-favorito');
+        favoriteBtn.onclick = async () => {
+            try {
+                await api.updateFavorite(thought.id, !thought.favorito);
+                ui.renderThoughts();
+            } catch (error) {
+                alert('Erro ao favoritar pensamento');
+            }
+        }
+
+        const favoriteIcon = document.createElement('img');
+        favoriteIcon.src = thought.favorito ? 'assets/imagens/icone-favorito.png' : 'assets/imagens/icone-favorito_outline.png';
+        favoriteIcon.alt = 'Favoritar pensamento';
+        favoriteBtn.appendChild(favoriteIcon);
+
         const icons = document.createElement('div');
         icons.classList.add('icones');
+        icons.appendChild(favoriteBtn);
         icons.appendChild(btnEdit);
         icons.appendChild(btnDelete);
 

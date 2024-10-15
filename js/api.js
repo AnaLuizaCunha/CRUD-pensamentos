@@ -69,7 +69,17 @@ const api = {
         alert('Erro ao buscar pensamentos')
         throw error
       }
+  },
+
+  async updateFavorite(id, favorito) {
+    try {
+      const response = await axios.patch(`${URL_BASE}/pensamentos/${id}`, { favorito }); 
+    } catch (error) {
+      alert('Erro ao favoritar pensamento')
+      throw error
+    }
   }
+
 }
 
 export default api
