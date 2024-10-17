@@ -22,12 +22,18 @@ async function handleFormSubmission(event) {
     const id = document.getElementById('pensamento-id').value;
     const conteudo = document.getElementById('pensamento-conteudo').value;
     const autoria = document.getElementById('pensamento-autoria').value;
+    const data = document.getElementById('pensamento-data').value;
     
+    if (!validateDate(data)) {
+        alert('Data inválida, selecione outra data');
+        return
+    }
+
     try {
         if(id) {
-            await api.editThought({ id, conteudo, autoria });
+            await api.editThought({ id, conteudo, autoria, data });
         } else {
-            await api.saveThoughts({ conteudo, autoria });
+            await api.saveThoughts({ conteudo, autoria, data });
         }
         ui.renderThoughts();
     }
@@ -48,4 +54,10 @@ async function handleSearch() {
     } catch (error) {
         alert('Erro ao buscar pensamento');
     }
+}
+
+function validateDate(data) {
+    const actualDate = new Date();
+    const insertedDate = new Date(data);
+    return insertedDate <= actualDate;
 }
