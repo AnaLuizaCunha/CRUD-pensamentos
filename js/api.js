@@ -1,10 +1,21 @@
 const URL_BASE = 'http://localhost:3000'
 
+const convertStringToDateTime = (dateString) => {
+  const [year, month, day] = dateString.split('-'); // 2024-12-31 = [2024, 12, 31] (retorno do split, desestruturação)
+  return new Date(Date.UTC(year, month - 1, day)); // month - 1 pois o mês começa em 0
+}
+
 const api = {
     async getThoughts() {
       try {
         const response = await axios.get(`${URL_BASE}/pensamentos`);
-        return await response.data
+        const thoughts = await response.data;
+
+        return thoughts.map(thought => {
+          return {
+            ... thought, data: new Date(thought.data) // Converte a data para o formato Date
+          }
+        })
       }
       catch {
         alert('Erro ao buscar pensamentos')
@@ -14,7 +25,8 @@ const api = {
 
     async saveThoughts(thought) {
       try {
-        const response = await axios.post(`${URL_BASE}/pensamentos`, thought);
+        const data = convertStringToDateTime(thought.data);
+        const response = await axios.post(`${URL_BASE}/pensamentos`, { ...thought, data: data.toISOString() }); // Envia o pensamento com a data convertida
         return await response.data
       }
       catch {
@@ -26,7 +38,10 @@ const api = {
     async getThoughtById(id) {
       try {
         const response = await axios.get(`${URL_BASE}/pensamentos/${id}`);
-        return await response.data
+        const thought =  await response.data
+        return {
+          ... thought, data: new Date(thought.data) // Converte a data para o formato Date
+        }
       }
       catch {
         console.log(error)
@@ -37,7 +52,8 @@ const api = {
 
     async editThought(thought) {
       try {
-        const response = await axios.put(`${URL_BASE}/pensamentos/${thought.id}`, thought);
+        // const data = convertStringToDateTime(thought.data);
+        const response = await axios.put(`${URL_BASE}/pensamentos/${thought.id}`, thought); 
         return await response.data
       }
       catch {

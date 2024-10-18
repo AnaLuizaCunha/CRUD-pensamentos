@@ -7,6 +7,8 @@ const ui = {
         document.getElementById('pensamento-id').value = thought.id;
         document.getElementById('pensamento-conteudo').value = thought.conteudo;
         document.getElementById('pensamento-autoria').value = thought.autoria;
+        document.getElementById('pensamento-data').value = thought.data.toISOString().split('T')[0]; // Converte a data para o formato yyyy-mm-dd, divide o array e pega a primeira parte
+        document.getElementById('form-container').scrollIntoView();
     },
 
     cleanForm() {
@@ -58,6 +60,15 @@ const ui = {
         thoughtAuthorship.textContent = thought.autoria;
         thoughtAuthorship.classList.add('pensamento-autoria');
         
+        const thoughtDate = document.createElement('div');
+
+        const option = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
+
+        const formattedDate = thought.data.toLocaleDateString('pt-BR', option);
+        
+        thoughtDate.textContent = formattedDate;
+        thoughtDate.classList.add('pensamento-data');
+        
         const btnEdit = document.createElement('button');
         btnEdit.classList.add('botao-editar');
         btnEdit.onclick = () => ui.fillForm(thought.id);
@@ -108,6 +119,7 @@ const ui = {
         li.appendChild(iconQuotationMarks);
         li.appendChild(thoughtContent);
         li.appendChild(thoughtAuthorship);
+        li.appendChild(thoughtDate);
         li.appendChild(icons);
         thoughtsList.appendChild(li);
         
